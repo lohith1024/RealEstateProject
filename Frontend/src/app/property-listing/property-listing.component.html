@@ -1,0 +1,13 @@
+<div *ngFor="let property of properties">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ property.title }}</mat-card-title>
+      <mat-card-subtitle>{{ property.location }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ property.description }}</p>
+      <p>Price: {{ property.price | currency }}</p>
+      <button mat-button (click)="bookProperty(property.id)">Book Now</button>
+    </mat-card-content>
+  </mat-card>
+</div>

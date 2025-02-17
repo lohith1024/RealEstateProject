@@ -1,0 +1,7 @@
+C:\Users\lohit\source\repos\RealEstateProject\ReviewRatingService\obj\Debug\net6.0\ReviewRatingService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lohit\source\repos\RealEstateProject\ReviewRatingService\obj\Debug\net6.0\ReviewRatingService.AssemblyInfoInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\ReviewRatingService\obj\Debug\net6.0\ReviewRatingService.AssemblyInfo.cs
+C:\Users\lohit\source\repos\RealEstateProject\ReviewRatingService\obj\Debug\net6.0\ReviewRatingService.csproj.CoreCompileInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\ReviewRatingService\obj\Debug\net6.0\ReviewRatingService.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\lohit\source\repos\RealEstateProject\ReviewRatingService\obj\Debug\net6.0\ReviewRatingService.csproj.AssemblyReference.cache
+C:\Users\lohit\source\repos\RealEstateProject\ReviewRatingService\obj\Debug\net6.0\ReviewRatingService.MvcApplicationPartsAssemblyInfo.cs

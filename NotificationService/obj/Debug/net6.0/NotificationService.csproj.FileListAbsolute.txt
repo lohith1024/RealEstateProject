@@ -1,0 +1,7 @@
+C:\Users\lohit\source\repos\RealEstateProject\NotificationService\obj\Debug\net6.0\NotificationService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lohit\source\repos\RealEstateProject\NotificationService\obj\Debug\net6.0\NotificationService.AssemblyInfoInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\NotificationService\obj\Debug\net6.0\NotificationService.AssemblyInfo.cs
+C:\Users\lohit\source\repos\RealEstateProject\NotificationService\obj\Debug\net6.0\NotificationService.csproj.CoreCompileInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\NotificationService\obj\Debug\net6.0\NotificationService.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\lohit\source\repos\RealEstateProject\NotificationService\obj\Debug\net6.0\NotificationService.csproj.AssemblyReference.cache
+C:\Users\lohit\source\repos\RealEstateProject\NotificationService\obj\Debug\net6.0\NotificationService.MvcApplicationPartsAssemblyInfo.cs

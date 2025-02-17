@@ -1,0 +1,7 @@
+C:\Users\lohit\source\repos\RealEstateProject\SearchService\obj\Debug\net6.0\SearchService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lohit\source\repos\RealEstateProject\SearchService\obj\Debug\net6.0\SearchService.AssemblyInfoInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\SearchService\obj\Debug\net6.0\SearchService.AssemblyInfo.cs
+C:\Users\lohit\source\repos\RealEstateProject\SearchService\obj\Debug\net6.0\SearchService.csproj.CoreCompileInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\SearchService\obj\Debug\net6.0\SearchService.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\lohit\source\repos\RealEstateProject\SearchService\obj\Debug\net6.0\SearchService.csproj.AssemblyReference.cache
+C:\Users\lohit\source\repos\RealEstateProject\SearchService\obj\Debug\net6.0\SearchService.MvcApplicationPartsAssemblyInfo.cs

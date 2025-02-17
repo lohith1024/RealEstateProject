@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "RU3lp/2BRhczImktRFi+iCCwTwOIZshKpE/b3WetW2M=",
+  "Source": "PropertyManagementService",
+  "BasePath": "_content/PropertyManagementService",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

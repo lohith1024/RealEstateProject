@@ -1,0 +1,7 @@
+C:\Users\lohit\source\repos\RealEstateProject\UserManagementService\obj\Debug\net6.0\UserManagementService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lohit\source\repos\RealEstateProject\UserManagementService\obj\Debug\net6.0\UserManagementService.AssemblyInfoInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\UserManagementService\obj\Debug\net6.0\UserManagementService.AssemblyInfo.cs
+C:\Users\lohit\source\repos\RealEstateProject\UserManagementService\obj\Debug\net6.0\UserManagementService.csproj.CoreCompileInputs.cache
+C:\Users\lohit\source\repos\RealEstateProject\UserManagementService\obj\Debug\net6.0\UserManagementService.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\lohit\source\repos\RealEstateProject\UserManagementService\obj\Debug\net6.0\UserManagementService.csproj.AssemblyReference.cache
+C:\Users\lohit\source\repos\RealEstateProject\UserManagementService\obj\Debug\net6.0\UserManagementService.MvcApplicationPartsAssemblyInfo.cs
