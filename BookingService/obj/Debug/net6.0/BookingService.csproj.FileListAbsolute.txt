@@ -1,7 +1,0 @@
-C:\Users\lohit\source\repos\RealEstateProject\BookingService\obj\Debug\net6.0\BookingService.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\lohit\source\repos\RealEstateProject\BookingService\obj\Debug\net6.0\BookingService.AssemblyInfoInputs.cache
-C:\Users\lohit\source\repos\RealEstateProject\BookingService\obj\Debug\net6.0\BookingService.AssemblyInfo.cs
-C:\Users\lohit\source\repos\RealEstateProject\BookingService\obj\Debug\net6.0\BookingService.csproj.CoreCompileInputs.cache
-C:\Users\lohit\source\repos\RealEstateProject\BookingService\obj\Debug\net6.0\BookingService.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\lohit\source\repos\RealEstateProject\BookingService\obj\Debug\net6.0\BookingService.csproj.AssemblyReference.cache
-C:\Users\lohit\source\repos\RealEstateProject\BookingService\obj\Debug\net6.0\BookingService.MvcApplicationPartsAssemblyInfo.cs
