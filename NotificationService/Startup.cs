@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using NotificationService.Data;
 using NotificationService.Services;
 using NotificationService.Interfaces;
+using Common.Resilience;
 
 namespace NotificationService
 {
@@ -23,6 +24,13 @@ namespace NotificationService
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add resilience policies
+            services.AddResiliencePolicies();
+
+            // Add resilient HTTP clients
+            services.AddResilientHttpClient<IUserService, UserServiceClient>(
+                Configuration["ServiceUrls:UserService"]);
 
             services.AddScoped<INotificationService, Services.NotificationService>();
 

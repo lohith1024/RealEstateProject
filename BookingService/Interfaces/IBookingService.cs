@@ -1,7 +1,6 @@
-using BookingService.Models;
-using BookingService.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BookingService.Models.DTOs;
 
 namespace BookingService.Interfaces
 {

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "Noti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService", "BookingService\BookingService.csproj", "{A2B3C4D5-E6F7-8901-A2B3-C4D5E6F78901}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{B41CFE47-9F78-4326-9E63-BF8C98AEE097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{A2B3C4D5-E6F7-8901-A2B3-C4D5E6F78901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2B3C4D5-E6F7-8901-A2B3-C4D5E6F78901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2B3C4D5-E6F7-8901-A2B3-C4D5E6F78901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B41CFE47-9F78-4326-9E63-BF8C98AEE097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B41CFE47-9F78-4326-9E63-BF8C98AEE097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B41CFE47-9F78-4326-9E63-BF8C98AEE097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B41CFE47-9F78-4326-9E63-BF8C98AEE097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

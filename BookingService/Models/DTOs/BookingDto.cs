@@ -19,11 +19,9 @@ namespace BookingService.Models.DTOs
         [Required]
         public DateTime CheckOutDate { get; set; }
 
-        public required string Status { get; set; }
-
-        [Required]
-        [Range(0, double.MaxValue)]
         public decimal TotalPrice { get; set; }
+
+        public string Status { get; set; } = "Pending";
 
         public string? PaymentId { get; set; }
 

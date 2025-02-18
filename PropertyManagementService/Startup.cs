@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using PropertyManagementService.Data;
 using PropertyManagementService.Interfaces;
 using PropertyManagementService.Services;
+using Common.Resilience;
 
 namespace PropertyManagementService
 {
@@ -30,6 +31,13 @@ namespace PropertyManagementService
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add resilience policies
+            services.AddResiliencePolicies();
+
+            // Add resilient HTTP clients
+            services.AddResilientHttpClient<IUserService, UserServiceClient>(
+                Configuration["ServiceUrls:UserService"]);
 
             services.AddScoped<IPropertyService, PropertyService>();
 

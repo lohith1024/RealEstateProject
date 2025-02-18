@@ -7,127 +7,164 @@ using BookingService.Models;
 using BookingService.Models.DTOs;
 using BookingService.Data;
 using BookingService.Interfaces;
+using BookingService.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace BookingService.Services
 {
     public class BookingService : IBookingService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IBookingRepository _repository;
+        private readonly IPaymentService _paymentService;
+        private readonly IPropertyService _propertyService;
+        private readonly INotificationService _notificationService;
+        private readonly ILogger<BookingService> _logger;
 
-        public BookingService(ApplicationDbContext context)
+        public BookingService(
+            IBookingRepository repository,
+            IPaymentService paymentService,
+            IPropertyService propertyService,
+            INotificationService notificationService,
+            ILogger<BookingService> logger)
         {
-            _context = context;
+            _repository = repository;
+            _paymentService = paymentService;
+            _propertyService = propertyService;
+            _notificationService = notificationService;
+            _logger = logger;
         }
 
         public async Task<BookingDto> CreateBooking(BookingDto bookingDto)
         {
-            var booking = new Booking
+            try
             {
-                UserId = bookingDto.UserId,
-                PropertyId = bookingDto.PropertyId,
-                CheckInDate = bookingDto.CheckInDate,
-                CheckOutDate = bookingDto.CheckOutDate,
-                TotalPrice = bookingDto.TotalPrice,
-                Status = "Pending",
-                CreatedAt = DateTime.UtcNow
-            };
+                // Verify property availability
+                var property = await _propertyService.GetPropertyAsync(bookingDto.PropertyId);
+                if (property == null)
+                {
+                    throw new InvalidOperationException("Property not found");
+                }
 
-            _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync();
+                var booking = new Booking
+                {
+                    UserId = bookingDto.UserId,
+                    PropertyId = bookingDto.PropertyId,
+                    CheckInDate = bookingDto.CheckInDate,
+                    CheckOutDate = bookingDto.CheckOutDate,
+                    TotalPrice = bookingDto.TotalPrice,
+                    Status = "Pending"
+                };
 
-            return MapToDto(booking);
+                // Create booking
+                var createdBooking = await _repository.CreateBookingAsync(booking);
+
+                return MapToDto(createdBooking);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating booking");
+                throw;
+            }
         }
 
         public async Task<BookingDto?> UpdateBooking(int id, BookingDto bookingDto)
         {
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null)
-                return null;
+            var booking = await _repository.GetBookingAsync(id);
+            if (booking == null) return null;
 
             booking.CheckInDate = bookingDto.CheckInDate;
             booking.CheckOutDate = bookingDto.CheckOutDate;
-            booking.Status = bookingDto.Status;
+            booking.TotalPrice = bookingDto.TotalPrice;
             booking.UpdatedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
-            return MapToDto(booking);
+            var success = await _repository.UpdateBookingAsync(booking);
+            return success ? MapToDto(booking) : null;
         }
 
         public async Task<BookingDto?> GetBookingById(int id)
         {
-            var booking = await _context.Bookings
-                .Include(b => b.User)
-                .Include(b => b.Property)
-                .FirstOrDefaultAsync(b => b.Id == id);
-
-            return booking == null ? null : MapToDto(booking);
+            var booking = await _repository.GetBookingAsync(id);
+            return booking != null ? MapToDto(booking) : null;
         }
 
         public async Task<IEnumerable<BookingDto>> GetAllBookings()
         {
-            return await _context.Bookings
-                .Include(b => b.User)
-                .Include(b => b.Property)
-                .Select(b => MapToDto(b))
-                .ToListAsync();
+            var bookings = await _repository.GetBookingsByUserAsync(0); // TODO: Implement GetAllBookings in repository
+            return bookings.Select(MapToDto);
         }
 
         public async Task<IEnumerable<BookingDto>> GetUserBookings(int userId)
         {
-            return await _context.Bookings
-                .Include(b => b.Property)
-                .Where(b => b.UserId == userId)
-                .Select(b => MapToDto(b))
-                .ToListAsync();
+            var bookings = await _repository.GetBookingsByUserAsync(userId);
+            return bookings.Select(MapToDto);
         }
 
         public async Task<IEnumerable<BookingDto>> GetPropertyBookings(int propertyId)
         {
-            return await _context.Bookings
-                .Include(b => b.User)
-                .Where(b => b.PropertyId == propertyId)
-                .Select(b => MapToDto(b))
-                .ToListAsync();
+            var bookings = await _repository.GetBookingsByPropertyAsync(propertyId);
+            return bookings.Select(MapToDto);
         }
 
         public async Task<BookingDto?> CancelBooking(int id, string cancellationReason)
         {
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null)
-                return null;
+            var booking = await _repository.GetBookingAsync(id);
+            if (booking == null) return null;
 
             booking.Status = "Cancelled";
-            booking.CancellationReason = cancellationReason;
             booking.UpdatedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
-            return MapToDto(booking);
+            var success = await _repository.UpdateBookingAsync(booking);
+            if (success)
+            {
+                await _notificationService.SendBookingCancellationAsync(id);
+                return MapToDto(booking);
+            }
+            return null;
         }
 
         public async Task<BookingDto?> ConfirmBooking(int id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null)
-                return null;
+            var booking = await _repository.GetBookingAsync(id);
+            if (booking == null) return null;
 
             booking.Status = "Confirmed";
             booking.UpdatedAt = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
-            return MapToDto(booking);
+            var success = await _repository.UpdateBookingAsync(booking);
+            if (success)
+            {
+                await _notificationService.SendBookingConfirmationAsync(id);
+                return MapToDto(booking);
+            }
+            return null;
         }
 
         public async Task<BookingDto?> ProcessPayment(int id)
         {
-            var booking = await _context.Bookings.FindAsync(id);
-            if (booking == null)
-                return null;
+            var booking = await _repository.GetBookingAsync(id);
+            if (booking == null) return null;
 
-            booking.Status = "Paid";
-            booking.UpdatedAt = DateTime.UtcNow;
+            var paymentResult = await _paymentService.ProcessPaymentAsync(new PaymentRequest
+            {
+                Amount = booking.TotalPrice,
+                UserId = booking.UserId,
+                BookingId = booking.Id
+            });
 
-            await _context.SaveChangesAsync();
-            return MapToDto(booking);
+            if (paymentResult.Success)
+            {
+                booking.Status = "Paid";
+                booking.UpdatedAt = DateTime.UtcNow;
+
+                var success = await _repository.UpdateBookingAsync(booking);
+                if (success)
+                {
+                    await _notificationService.SendPaymentConfirmationAsync(id);
+                    return MapToDto(booking);
+                }
+            }
+
+            return null;
         }
 
         private static BookingDto MapToDto(Booking booking)
@@ -141,8 +178,6 @@ namespace BookingService.Services
                 CheckOutDate = booking.CheckOutDate,
                 TotalPrice = booking.TotalPrice,
                 Status = booking.Status,
-                PaymentId = booking.PaymentId,
-                CancellationReason = booking.CancellationReason,
                 CreatedAt = booking.CreatedAt,
                 UpdatedAt = booking.UpdatedAt
             };

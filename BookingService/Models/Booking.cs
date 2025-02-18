@@ -21,7 +21,7 @@ namespace BookingService.Models
 
         [Required]
         [MaxLength(50)]
-        public required string Status { get; set; }
+        public required string Status { get; set; } = "Pending";
 
         [Required]
         [Range(0, double.MaxValue)]

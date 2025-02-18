@@ -19,6 +19,7 @@ using UserManagementService.Data;
 using UserManagementService.Models;
 using UserManagementService.Services;
 using UserManagementService.Interfaces;
+using Common.Resilience;
 
 namespace UserManagementService
 {
@@ -59,15 +60,12 @@ namespace UserManagementService
                 };
             });
 
-            services.AddHttpClient("PropertyService", client =>
-            {
-                client.BaseAddress = new Uri(Configuration["ServiceUrls:PropertyService"]);
-            })
-            .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(3, retryAttempt =>
-                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
-            .AddTransientHttpErrorPolicy(builder => builder.CircuitBreakerAsync(
-                handledEventsAllowedBeforeBreaking: 3,
-                durationOfBreak: TimeSpan.FromSeconds(30)));
+            // Add resilience policies
+            services.AddResiliencePolicies();
+
+            // Add resilient HTTP clients
+            services.AddResilientHttpClient<IPropertyService, PropertyServiceClient>(
+                Configuration["ServiceUrls:PropertyService"]);
 
             services.AddScoped<IUserService, UserService>();
 
