@@ -1,0 +1,199 @@
+version: "3.8"
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+      - MSSQL_PID=Developer
+      - MSSQL_MEMORY_LIMIT_MB=1024
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - realestate-network
+    deploy:
+      resources:
+        limits:
+          memory: 1.5G
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourStrong@Passw0rd -Q 'SELECT 1' || exit 1
+      interval: 30s
+      retries: 10
+      start_period: 60s
+      timeout: 10s
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - api-gateway-keys:/root/.aspnet/DataProtection-Keys
+    networks:
+      - realestate-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+
+  booking-service:
+    build:
+      context: .
+      dockerfile: BookingService/Dockerfile
+    container_name: booking-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=BookingDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - realestate-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  property-service:
+    build:
+      context: .
+      dockerfile: PropertyManagementService/Dockerfile
+    container_name: property-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PropertyDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - realestate-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: PaymentService/Dockerfile
+    container_name: payment-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PaymentDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - realestate-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: NotificationService/Dockerfile
+    container_name: notification-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=NotificationDb;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - realestate-network
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  sqlserver-data:
+  api-gateway-keys:
+
+networks:
+  realestate-network:
+    driver: bridge

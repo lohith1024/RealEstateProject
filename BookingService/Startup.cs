@@ -7,9 +7,11 @@ using Microsoft.OpenApi.Models;
 using BookingService.Interfaces;
 using BookingService.Services;
 using Common.Resilience;
+using Common.Logging;
 using Microsoft.EntityFrameworkCore;
 using BookingService.Data;
 using BookingService.Repositories;
+using Serilog;
 
 namespace BookingService
 {
@@ -35,6 +37,9 @@ namespace BookingService
 
             services.AddMemoryCache();
             services.AddLogging();
+
+            // Add Serilog
+            services.AddCustomLogging(Configuration, "BookingService");
 
             services.AddResiliencePolicies();
 
@@ -63,6 +68,10 @@ namespace BookingService
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+
+            // Use Serilog request logging
+            app.UseSerilogRequestLogging();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
